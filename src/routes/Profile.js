@@ -1,2 +1,3 @@
-import React from "react";
-export default ()=> <span>Profile</span>;
+import React from 'react';
+const Profile = () => <span>Profile</span>;
+export default Profile;
