@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
+import { dbService } from 'utils/firebase';
+
 const Home = () => {
   const [wweet, setWweet] = useState('');
-  const onSubmit = event => {
+  const onSubmit = async event => {
     event.preventDefault();
+    await dbService.collection('wweets').add({
+      wweet,
+      createdAt: Date.now(),
+    });
+    setWweet('');
   };
 
   const onChange = event => {
@@ -22,7 +29,7 @@ const Home = () => {
           placeholder="What's on your mind"
           maxLength={120}
         />
-        <input type="text" value="Wweet" />
+        <input type="submit" value="Wweet" />
       </form>
     </div>
   );
