@@ -40,7 +40,7 @@ const Home = ({ userObject }) => {
           type="text"
           value={wweet}
           onChange={onChange}
-          placeholder="What's on your mind"
+          placeholder=""
           maxLength={120}
         />
         <input type="submit" value="Wweet" onClick={onSubmit} />
