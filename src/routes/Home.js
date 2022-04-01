@@ -1,32 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { db, storeService } from 'utils/firebase';
 
-const Home = () => {
+const Home = ({ userObject }) => {
   const [wweet, setWweet] = useState('');
   const [wweets, setWweets] = useState([]);
-  const getWweets = async () => {
-    const wweets = await storeService.getDocs(
-      storeService.collection(db, 'wweets')
-    );
-
-    wweets.forEach(document => {
-      const wweetObject = {
-        ...document.data(),
-        id: document.id,
-      };
-      setWweets(prev => [wweetObject, ...prev]);
-    });
-  };
 
   useEffect(() => {
-    getWweets();
+    storeService.onSnapshot(storeService.collection(db, 'wweets'), snapshot => {
+      const wweetArray = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setWweets(wweetArray);
+    });
   }, []);
 
   const onSubmit = async event => {
     event.preventDefault();
+
     await storeService.addDoc(storeService.collection(db, 'wweets'), {
-      wweet,
+      text: wweet,
       createdAt: Date.now(),
+      creatorId: userObject.uid,
     });
     setWweet('');
   };
@@ -53,7 +48,7 @@ const Home = () => {
       <div>
         {wweets.map(wweet => (
           <div key={wweet.id}>
-            <h4>{wweet.wweet}</h4>
+            <h4>{wweet.text}</h4>
           </div>
         ))}
       </div>
