@@ -1,3 +1,4 @@
+import Wweet from 'components/Wweet';
 import React, { useEffect, useState } from 'react';
 import { db, storeService } from 'utils/firebase';
 
@@ -47,9 +48,11 @@ const Home = ({ userObject }) => {
       </form>
       <div>
         {wweets.map(wweet => (
-          <div key={wweet.id}>
-            <h4>{wweet.text}</h4>
-          </div>
+          <Wweet
+            key={wweet.id}
+            wweetObj={wweet}
+            isOwner={wweet.creatorId === userObject.uid}
+          />
         ))}
       </div>
     </div>
