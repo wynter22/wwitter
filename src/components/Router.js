@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Auth from 'routes/Auth';
 import Home from 'routes/Home';
 import Profile from 'routes/Profile';
@@ -9,24 +9,18 @@ const AppRouter = ({ isLoggedIn, userObject }) => {
   return (
     <Router>
       {isLoggedIn && <Navigation />}
-      <Switch>
+      <Routes>
         {isLoggedIn ? (
           <>
-            <Route exact path="/">
-              <Home userObject={userObject} />
-            </Route>
-            <Route exact path="/profile">
-              <Profile />
-            </Route>
+            <Route exact path="/" element={<Home userObject={userObject} />} />
+            <Route exact path="/profile" element={<Profile />} />
           </>
         ) : (
           <>
-            <Route path="/">
-              <Auth />
-            </Route>
+            <Route path="/" element={<Auth />} />
           </>
         )}
-      </Switch>
+      </Routes>
     </Router>
   );
 };

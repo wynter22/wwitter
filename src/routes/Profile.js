@@ -1,13 +1,13 @@
 import React from 'react';
 import { authService } from 'utils/firebase';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const onLogOutClick = () => {
     const auth = authService.getAuth();
     authService.signOut(auth);
-    history.push('/');
+    navigate('/');
   };
   return (
     <>
