@@ -1,4 +1,5 @@
 import Wweet from 'components/Wweet';
+import { orderBy } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { db, storeService } from 'utils/firebase';
 
@@ -7,7 +8,11 @@ const Home = ({ userObject }) => {
   const [wweets, setWweets] = useState([]);
 
   useEffect(() => {
-    storeService.onSnapshot(storeService.collection(db, 'wweets'), snapshot => {
+    const q = storeService.query(
+      storeService.collection(db, 'wweets'),
+      orderBy('createdAt', 'desc')
+    );
+    storeService.onSnapshot(q, snapshot => {
       const wweetArray = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
