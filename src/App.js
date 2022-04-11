@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import AppRouter from 'components/Router';
 import { authService } from 'utils/firebase';
-import { RecoilRoot } from 'recoil';
 
 function App() {
   const [init, setInit] = useState(false);
