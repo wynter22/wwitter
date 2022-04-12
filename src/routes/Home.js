@@ -6,7 +6,7 @@ import { db, storeService } from 'utils/firebase';
 const Home = ({ userObject }) => {
   const [wweet, setWweet] = useState('');
   const [wweets, setWweets] = useState([]);
-
+  const [attachment, setAttachment] = useState();
   useEffect(() => {
     const q = storeService.query(
       storeService.collection(db, 'wweets'),
@@ -32,12 +32,29 @@ const Home = ({ userObject }) => {
     setWweet('');
   };
 
+  const onFileChange = event => {
+    const {
+      target: { files },
+    } = event;
+    const theFile = files[0];
+    const reader = new FileReader();
+    reader.onloadend = finishedEvent => {
+      const {
+        currentTarget: { result },
+      } = finishedEvent;
+      setAttachment(result);
+    };
+    reader.readAsDataURL(theFile);
+  };
+
   const onChange = event => {
     const {
       target: { value },
     } = event;
     setWweet(value);
   };
+
+  const onClearAttachment = () => setAttachment(null);
 
   return (
     <div>
@@ -49,7 +66,14 @@ const Home = ({ userObject }) => {
           placeholder=""
           maxLength={120}
         />
+        <input type="file" accept="imgae/*" onChange={onFileChange} />
         <input type="submit" value="Wweet" onClick={onSubmit} />
+        {attachment && (
+          <div>
+            <img src={attachment} width="50px" height="50px" />
+            <button onClick={onClearAttachment}>Cancel</button>
+          </div>
+        )}
       </form>
       <div>
         {wweets.map(wweet => (
